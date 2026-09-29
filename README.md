@@ -1,6 +1,6 @@
 # Django REST Framework Project: CI/CD и Docker
 
-Проект представляет собой API на базе Django REST Framework (DRF), полностью контейнеризированный и готовый к автоматическому развертыванию (CI/CD) через GitHub Actions на виртуальную машину Yandex Cloud.
+Проект представляет собой API на базе Django REST Framework (DRF), полностью контейнеризированный и готовый к автоматическому развертыванию (CI/CD) через GitHub Actions на виртуальную машину Cloud.
 
 ## Стек технологий
 * Backend: Python, Django, DRF
@@ -56,12 +56,12 @@ Docker Compose автоматически соберет и запустит к�
 
 ---
 
-## Настройка удаленного сервера (Yandex Cloud)
+## Настройка удаленного сервера (Cloud)
 
-Внимание (экономия баланса): Чтобы не израсходовать стартовый грант в 1000 рублей, запускайте виртуальную машину Yandex Cloud только на время выполнения и проверки задания наставником!
+Внимание (экономия баланса): Чтобы не израсходовать стартовый грант в 1000 рублей, запускайте виртуальную машину Cloud только на время выполнения и проверки задания наставником!
 
 ### 1. Подготовка ВМ
-1. Создайте ВМ в консоли Yandex Cloud (рекомендуется ОС Ubuntu 22.04 LTS).
+1. Создайте ВМ в консоли Cloud (рекомендуется ОС Ubuntu 22.04 LTS).
 2. Подключитесь к ней по SSH: ssh ubuntu@<IP_ВМ>.
 3. Установите Docker и Docker Compose:
    ```bash
@@ -83,13 +83,13 @@ Docker Compose автоматически соберет и запустит к�
    ```bash
    ssh-keygen -t rsa -b 4096 -C "github-actions"
    ```
-2. Публичный ключ (.pub) добавьте на сервере Yandex Cloud в файл ~/.ssh/authorized_keys.
+2. Публичный ключ (.pub) добавьте на сервере Cloud в файл ~/.ssh/authorized_keys.
 3. Приватный ключ скопируйте для GitHub.
 
 ### Шаг 2: Добавление секретов в GitHub
 В репозитории перейдите в Settings -> Secrets and variables -> Actions -> New repository secret и добавьте:
 
-* SSH_HOST — Публичный IP-адрес вашей ВМ в Yandex Cloud.
+* SSH_HOST — Публичный IP-адрес вашей ВМ в Cloud.
 * SSH_USER — Имя пользователя сервера (по умолчанию ubuntu).
 * SSH_KEY — Полный текст приватного SSH-ключа (начиная с -----BEGIN RSA PRIVATE KEY-----).
 
@@ -100,7 +100,7 @@ Docker Compose автоматически соберет и запустит к�
 В репозиторий добавлен файл пайплайна, выполняющий следующие шаги:
 1. Линтинг и Тестирование: Проверка кода (flake8/black) и запуск unit-тестов Django.
 2. Проверка сборки: Тестовая сборка Docker-образов для контроля целостности Dockerfile.
-3. Автоматический деплой: При успешных тестах подключается по SSH к Yandex Cloud, стягивает изменения (git pull) и перезапускает проект через Docker Compose.
+3. Автоматический деплой: При успешных тестах подключается по SSH к Cloud, стягивает изменения (git pull) и перезапускает проект через Docker Compose.
 
 ```yaml
 name: Django CI/CD Pipeline
@@ -142,7 +142,7 @@ jobs:
     if: github.event_name == 'push' && github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
     steps:
-      - name: Deploy to Yandex Cloud via SSH
+      - name: Deploy to Cloud via SSH
         uses: appleboy/ssh-action@v1.0.3
         with:
           host: \${{ secrets.SSH_HOST }}
