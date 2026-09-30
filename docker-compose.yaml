@@ -6,15 +6,9 @@ services:
       - postgres_data:/var/lib/postgresql/data
     env_file:
       - .env
-    environment:
-      - POSTGRES_DB=project_db
-      - POSTGRES_USER=project_user
-      - POSTGRES_PASSWORD=project_password
 
   redis:
     image: redis:7-alpine
-    ports:
-      - "6379:6379"
 
   web:
     build: .

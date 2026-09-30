@@ -13,15 +13,12 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://djangoproject.com
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = "django-insecure-31jw%07gk(u4u2-v^c9d=+*0fk70i=y75vs%r%d4uokvsy8fg6"
+SECRET_KEY = os.getenv('SECRET_KEY', 'django-insecure-default-key-for-local-dev')
 
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = os.getenv('DEBUG', 'False') == 'True'
 
-ALLOWED_HOSTS = ["localhost", "127.0.0.1", "web"]
+ALLOWED_HOSTS = [host.strip() for host in os.getenv('ALLOWED_HOSTS', '*').split(',') if host.strip()]
 
-
-# Application definition
 
 INSTALLED_APPS = [
     "django.contrib.admin",
@@ -68,13 +65,13 @@ ASGI_APPLICATION = "config.asgi.application"
 # https://djangoproject.com
 
 DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.postgresql",
-        "NAME": os.environ.get("POSTGRES_DB", "project_db"),
-        "USER": os.environ.get("POSTGRES_USER", "project_user"),
-        "PASSWORD": os.environ.get("POSTGRES_PASSWORD", "project_password"),
-        "HOST": "db",  # Имя сервиса БД из docker-compose.yml
-        "PORT": "5432",
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': os.getenv('POSTGRES_DB', 'postgres'),
+        'USER': os.getenv('POSTGRES_USER', 'postgres'),
+        'PASSWORD': os.getenv('POSTGRES_PASSWORD', 'postgres'),
+        'HOST': os.getenv('DB_HOST', 'db'),
+        'PORT': os.getenv('DB_PORT', '5432'),
     }
 }
 
